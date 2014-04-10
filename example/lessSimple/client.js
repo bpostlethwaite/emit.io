@@ -21,7 +21,8 @@ emitIO(ev2, emitStream)
 
 
 wstream.pipe(parser)
-.pipe(emitStream)
+
+emitStream
 .pipe(JSONStream.stringify())
 .pipe(wstream)
 

@@ -20,10 +20,6 @@ server.on('connection', function(ws) {
   .pipe(JSONStream.stringify())
   .pipe(wstream);
 
-  // new pipeline 2 --- will print local messages as array
-  // emitIO.createStream(ev1)
-  // .pipe(JSONStream.stringify())
-  // .pipe(process.stdout)
 
 ////////////////////////////////////////////////
   ev1.emit('server-message', 'server emitter 1 ok');
