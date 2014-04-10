@@ -1,7 +1,7 @@
 var websocket = require('websocket-stream');
 var WebSocketServer = require('ws').Server;
 var JSONStream = require('JSONStream');
-var emitIO = require('./')()
+var emitIO = require('../../.')()
 
 var server =  new WebSocketServer({port: 8080});
 
@@ -9,24 +9,27 @@ server.on('connection', function(ws) {
 
 
   var wstream = websocket(ws);
-  var parser = JSONStream.parse([true])
-  var emitStream = emitIO.createStream()
-  var ev = emitIO.createEmitter(wstream.pipe(parser))
+  var parser = wstream.pipe(JSONStream.parse([true]))
+  var ev1 = emitIO(parser)
+  var ev2 = emitIO(parser)
 
-  // pipeline 1 --- will send local messages over websocket
+  var emitStream = emitIO(ev1)
+
+  // pipeline 1 --- will send and receive local messages over websocket
   emitStream
   .pipe(JSONStream.stringify())
   .pipe(wstream);
 
   // new pipeline 2 --- will print local messages as array
-  emitIO.createStream()
-  .pipe(JSONStream.stringify())
-  .pipe(process.stdout)
+  // emitIO.createStream(ev1)
+  // .pipe(JSONStream.stringify())
+  // .pipe(process.stdout)
 
 ////////////////////////////////////////////////
-  ev.emit('server ok', Date.now());
+  ev1.emit('server-message', 'server emitter 1 ok');
+  ev2.emit('server emitter 2 ok', 'server emitter 2 ok');
 
-  ev.on('client message', function (msg) {
+  ev1.on('client message', function (msg) {
     console.log(msg);
   });
 

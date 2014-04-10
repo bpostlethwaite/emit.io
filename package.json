@@ -28,5 +28,10 @@
   "homepage": "https://github.com/bpostlethwaite/emit.io",
   "dependencies": {
     "through": "^2.3.4"
+  },
+  "devDependencies": {
+    "websocket-stream": "^0.5.1",
+    "ws": "^0.4.31",
+    "JSONStream": "^0.8.0"
   }
 }
