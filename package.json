@@ -1,7 +1,7 @@
 {
   "name": "emit.io",
-  "version": "0.0.2",
-  "description": "turn a node stream into an emitter like socket.io",
+  "version": "0.1.1",
+  "description": "turn emitters to streams and streams to emitters - supports duplexed communication",
   "main": "index.js",
   "directories": {
     "example": "example"
@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/bpostlethwaite/emit.io",
   "dependencies": {
-    "through": "^2.3.4"
+    "through": ">=2.3.4"
   },
   "devDependencies": {
     "websocket-stream": "^0.5.1",
