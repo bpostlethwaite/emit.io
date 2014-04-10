@@ -1,0 +1,32 @@
+{
+  "name": "emit.io",
+  "version": "0.0.1",
+  "description": "turn a node stream into an emitter like socket.io",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bpostlethwaite/emit.io.git"
+  },
+  "keywords": [
+    "emit",
+    "socket.io",
+    "stream",
+    "emitter",
+    "messaging"
+  ],
+  "author": "ben postlethwaite",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bpostlethwaite/emit.io/issues"
+  },
+  "homepage": "https://github.com/bpostlethwaite/emit.io",
+  "dependencies": {
+    "through": "^2.3.4"
+  }
+}
