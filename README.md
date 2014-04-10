@@ -16,9 +16,7 @@ emitter.emit('send-to-remote', {data: 3})
 ```
 
 ## Usage `var emitIO = require('emit.io')`
-Ships javascript objects so you are required to run the outgoing channel through an string encoder and the incoming channel through a parser. JSONStream and mux-demux are example modules to handle encoding.
-
-References to `socket` are assumed to be a duplex socket like a tcp connection or websocket connection or any other node duplex stream. You will have to add some sort of JSON encoding logic, that is left out for brevity.
+In the following section references to `socket` are assumed to be a duplex socket like a tcp connection or websocket connection or any other node duplex stream. You will have to add some sort of JSON encoding logic, that is left out for brevity. ([JSONStream](https://github.com/dominictarr/JSONStream) or [mux-demux](https://github.com/dominictarr/mux-demux) are recommended)
 
 ### Stream->Emitter
 Just pass `emitIO` a stream and it will return an event emitter that will listen on the stream for events
@@ -54,7 +52,7 @@ var outStream = emitIO(someExistingEmitter)
 var newEmitter = emitIO(inStream)
 emitIO(newEmitter, outStream)   // now newEmitter will pipe its communication down the same channel as someExistingEmitter
 ```
-### Send events down multiple streams - getting Crazy time
+### Send events down multiple streams - getting cray cray
 To send events from a single emitter down multiple streams do
 ```javascript
 var MuxDemux = require('mux-demux')

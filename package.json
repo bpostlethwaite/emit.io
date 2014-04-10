@@ -1,7 +1,7 @@
 {
   "name": "emit.io",
-  "version": "0.1.1",
-  "description": "turn emitters to streams and streams to emitters - supports duplexed communication",
+  "version": "0.1.2",
+  "description": "turn emitters to streams and streams to emitters. Event branching and 2-way communication",
   "main": "index.js",
   "directories": {
     "example": "example"
