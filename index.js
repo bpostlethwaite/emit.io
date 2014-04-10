@@ -1,5 +1,5 @@
 var EventEmitter = require('events').EventEmitter
-var through = require('through')
+var Through = require('stream').PassThrough
 
 module.exports = function () {
   var eID = 0
@@ -17,7 +17,7 @@ module.exports = function () {
 
   function createEmitter (jstream, ev) {
 
-    if (!ev) ev = new EventEmitter
+    if (!ev) ev = new EventEmitter()
 
     if (!('eID' in ev)) ev.eID = eID++
     if (!(ev.eID in self.emitterMap)) self.emitterMap[ev.eID] = []
@@ -31,7 +31,8 @@ module.exports = function () {
   }
 
   function createStream (ev, stream) {
-    if (!stream) stream = through()
+    if (!stream) stream = new Through()
+    stream.resume()
     var emit = ev.emit
 
     if (!('eID' in ev)) ev.eID = eID++
