@@ -12,44 +12,75 @@ module.exports = function () {
     else return createStream.apply(self, args)
   }
 
-  self.emitterMap = {}
+  self.emitters = {}
 
 
   function createEmitter (jstream, ev) {
-
+    /*
+     * This gets called when we are transforming
+     * incoming stream data into emit data. Or
+     * adding a new stream to a current emitter.
+     */
     if (!ev) ev = new EventEmitter()
 
     if (!('eID' in ev)) ev.eID = eID++
-    if (!(ev.eID in self.emitterMap)) self.emitterMap[ev.eID] = []
+    if (!(ev.eID in self.emitters)) {
+      self.emitters[ev.eID] = {
+        streams : []
+      , emit : ev.emit
+      }
+    }
 
-    var emit = ev.emit
-    jstream.on('data', function (data) {
-      emit.apply(ev, data);
-    });
-
+    if (self.emitters[ev.eID].streams.indexOf(jstream) === -1) {
+      jstream.on('data', function (data) {
+        self.emitters[ev.eID].emit.apply(ev, data);
+      });
+    }
     return ev
   }
 
   function createStream (ev, stream) {
+    /*
+     * Creates an outgoing stream from an
+     * emitter. Multiple outgoing streams
+     * may be created. A method is added to
+     * the emitter to emit down a particular
+     * stream
+     */
     if (!stream) stream = new Through()
     stream.resume()
     var emit = ev.emit
 
     if (!('eID' in ev)) ev.eID = eID++
-    if (!(ev.eID in self.emitterMap)) self.emitterMap[ev.eID] = []
+    if (!(ev.eID in self.emitters)) {
+      self.emitters[ev.eID] = {
+        streams : []
+      , emit : ev.emit
+      }
+    }
 
     ev.emit = function () {
       var args = [].slice.call(arguments)
-      self.emitterMap[ev.eID].forEach( function (stream) {
+      self.emitters[this.eID].streams.forEach( function (stream) {
         stream.emit('data', args)
       })
-      emit.apply(ev, args)
+      self.emitters[ev.eID].emit.apply(this, args)
     }
 
-    self.emitterMap[ev.eID].push(stream)
+    if (!('emitTo' in ev)) ev.emitTo = emitTo
+
+    if (self.emitters[ev.eID].streams.indexOf(stream) === -1) {
+      self.emitters[ev.eID].streams.push(stream)
+    }
+
     return stream
   }
 
+  function emitTo () {
+    var args = [].slice.call(arguments)
+    var stream = args.shift()
+    stream.emit('data', args)
+  }
 
   self.createEmitter = createEmitter
   self.createStream = createStream
