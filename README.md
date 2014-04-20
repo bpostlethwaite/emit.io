@@ -52,7 +52,7 @@ var outStream = emitIO(someExistingEmitter)
 var newEmitter = emitIO(inStream)
 emitIO(newEmitter, outStream)   // now newEmitter will pipe its communication down the same channel as someExistingEmitter
 ```
-### Send events down multiple streams - getting cray cray
+### Send events down multiple streams
 To send events from a single emitter down multiple streams do
 ```javascript
 var MuxDemux = require('mux-demux')
