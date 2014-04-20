@@ -49,7 +49,6 @@ module.exports = function () {
      */
     if (!stream) stream = new Through()
     stream.resume()
-    var emit = ev.emit
 
     if (!('eID' in ev)) ev.eID = eID++
     if (!(ev.eID in self.emitters)) {
@@ -57,15 +56,16 @@ module.exports = function () {
         streams : []
       , emit : ev.emit
       }
+
+      ev.emit = function () {
+        var args = [].slice.call(arguments)
+        self.emitters[this.eID].streams.forEach( function (stream) {
+          stream.emit('data', args)
+        })
+        self.emitters[ev.eID].emit.apply(this, args)
+      }
     }
 
-    ev.emit = function () {
-      var args = [].slice.call(arguments)
-      self.emitters[this.eID].streams.forEach( function (stream) {
-        stream.emit('data', args)
-      })
-      self.emitters[ev.eID].emit.apply(this, args)
-    }
 
     if (!('emitTo' in ev)) ev.emitTo = emitTo
 
