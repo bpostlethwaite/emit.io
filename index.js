@@ -56,14 +56,14 @@ module.exports = function () {
         streams : []
       , emit : ev.emit
       }
+    }
 
-      ev.emit = function () {
-        var args = [].slice.call(arguments)
-        self.emitters[this.eID].streams.forEach( function (stream) {
-          stream.emit('data', args)
-        })
-        self.emitters[ev.eID].emit.apply(this, args)
-      }
+    ev.emit = function () {
+      var args = [].slice.call(arguments)
+      self.emitters[this.eID].streams.forEach( function (stream) {
+        stream.emit('data', args)
+      })
+      self.emitters[ev.eID].emit.apply(this, args)
     }
 
 
